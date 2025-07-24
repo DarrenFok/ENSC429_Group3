@@ -34,7 +34,7 @@ def write_data_to_excel(Re_X, Im_X, fs):
     df_Im_X = pd.DataFrame(Im_X)
     df_fs = pd.DataFrame([[fs]])
 
-    with pd.ExcelWriter('stft.xlsx', engine="xlsxwriter") as writer:
+    with pd.ExcelWriter('stft-sample.xlsx', engine="xlsxwriter") as writer:
         df_Re_X.to_excel(writer, sheet_name='Re_X', index=False)
         df_Im_X.to_excel(writer, sheet_name='Im_X', index=False)
         df_fs.to_excel(writer, sheet_name='Sampling Rate', index=False)
