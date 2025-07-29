@@ -28,13 +28,13 @@ def get_STFT(audio, fs):
     f, t, X = stft(audio, fs=fs, nperseg=1024)
     return X, f, t
 
-def write_data_to_excel(Re_X, Im_X, fs):
+def write_data_to_excel(Re_X, Im_X, fs, filename):
     # Convert to DataFrame
     df_Re_X = pd.DataFrame(Re_X)
     df_Im_X = pd.DataFrame(Im_X)
     df_fs = pd.DataFrame([[fs]])
 
-    with pd.ExcelWriter('stft-sample.xlsx', engine="xlsxwriter") as writer:
+    with pd.ExcelWriter(filename[:-4] + '.xlsx', engine="xlsxwriter") as writer:
         df_Re_X.to_excel(writer, sheet_name='Re_X', index=False)
         df_Im_X.to_excel(writer, sheet_name='Im_X', index=False)
         df_fs.to_excel(writer, sheet_name='Sampling Rate', index=False)
@@ -43,7 +43,7 @@ def write_data_to_excel(Re_X, Im_X, fs):
 def convert_to_excel(filename, make_spectrogram):
     audio, fs = grab_audio_file_data_mono(filename)
     X, f, t = get_STFT(audio, fs)
-    write_data_to_excel(np.real(X), np.imag(X), fs)
+    write_data_to_excel(np.real(X), np.imag(X), fs, filename)
 
     if make_spectrogram:
         plt.pcolormesh(t, f, np.abs(X), shading='auto')
