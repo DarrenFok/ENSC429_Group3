@@ -25,6 +25,6 @@ def convert_one(track_title):
 
 def main():
     print("testmain")
-    convert_one("sunflower-street-drumloop.mp3")
+    convert_one("whatsmyageagainInstrumental.mp3")
 
 main()
