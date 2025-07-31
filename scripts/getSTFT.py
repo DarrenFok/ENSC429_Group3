@@ -16,7 +16,7 @@ import xlsxwriter
 import openpyxl
 
 def grab_audio_file_data_mono(filename):
-    audio, fs = librosa.load('../data/Samples/' + filename, sr=None)
+    audio, fs = librosa.load('../data/Samples/test/mix' + filename, sr=None)
 
     # remove stereo
     if audio.ndim > 1:

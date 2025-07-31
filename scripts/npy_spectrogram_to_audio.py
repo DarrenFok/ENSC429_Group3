@@ -11,9 +11,10 @@ def reconstruct_audio_from_stft_npy(npy_path, output_path, nperseg=1024, noverla
     Zxx = np.load(npy_path)
     magnitude = librosa.db_to_amplitude(Zxx)
     y = librosa.griffinlim(magnitude, n_iter=32, hop_length=512, win_length=1024)
+    y = y/np.max(np.abs(y))
 
     # save output to WAV
-    sf.write("reconstructed.wav", y, 14400)
+    sf.write("reconstructed.wav", y, 44100)
 
 def reconstruct_audio_from_directory(npy_dir, output_dir):
     """
@@ -31,6 +32,6 @@ def reconstruct_audio_from_directory(npy_dir, output_dir):
 if __name__ == '__main__':
     directory = (Path(os.getcwd())).parent
     reconstruct_audio_from_directory(
-        npy_dir=directory/"data"/ "Samples",
+        npy_dir=directory/"data"/"Samples",
         output_dir=directory/"data"/"Reconstructed"
     )

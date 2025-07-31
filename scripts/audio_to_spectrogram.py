@@ -6,7 +6,7 @@ import getSTFT
 
 def convert_all_files():
 
-    directory = os.fsencode('../data/Samples')
+    directory = os.fsencode('../data/Samples/test/mix')
 
     # TAKES A REALLY LONG TIME FOR LONGER AUDIO FILES
     for file in os.listdir(directory):
@@ -25,6 +25,7 @@ def convert_one(track_title):
 
 def main():
     print("testmain")
-    convert_one("whatsmyageagainInstrumental.mp3")
+    # convert_one("whatsmyageagainInstrumental.mp3")
+    convert_all_files()
 
 main()
