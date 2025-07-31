@@ -2,6 +2,7 @@ import numpy as np
 from scipy.io import wavfile
 from scipy.signal import stft
 from pathlib import Path
+import librosa
 
 def wav_to_npy(wav_path, output_dir=None, nperseg=1024, noverlap=512):
     """
@@ -23,14 +24,17 @@ def wav_to_npy(wav_path, output_dir=None, nperseg=1024, noverlap=512):
     # Perform STFT
     _, _, Zxx = stft(audio, fs=fs, nperseg=nperseg, noverlap=noverlap)
 
-    # Stack real & imaginary parts
-    combined = np.stack((np.real(Zxx), np.imag(Zxx)), axis=0)
+    # # Stack real & imaginary parts
+    # combined = np.stack((np.real(Zxx), np.imag(Zxx)), axis=0)
+
+    magnitude = np.abs(Zxx)
+    log_mag_spectrogram = librosa.amplitude_to_db(magnitude)
 
     # Save
     output_file = output_dir / f"{wav_path.stem}.npy"
-    np.save(output_file, combined)
+    np.save(output_file, log_mag_spectrogram)
 
-    print(f"Converted {wav_path.name} -> {output_file} (shape: {combined.shape})")
+    print(f"Converted {wav_path.name} -> {output_file} (shape: {log_mag_spectrogram.shape})")
 
 
 def batch_convert_wav_to_npy(input_dir, output_dir=None, nperseg=1024, noverlap=512):
