@@ -61,3 +61,5 @@ def batch_convert_wav_to_npy(input_dir, output_dir=None, nperseg=1024, noverlap=
 
 # Example usage:
 # batch_convert_wav_to_npy("path/to/wav_folder", output_dir="path/to/npy_folder")
+
+batch_convert_wav_to_npy("C:/Users/ren_f/Documents/Projects/ENSC429_Group3/data/Samples/vocal", "C:/Users/ren_f/Documents/Projects/ENSC429_Group3/data/vocal")
