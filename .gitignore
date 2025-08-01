@@ -136,3 +136,25 @@ sysinfo.txt
 *.pyo
 *.pyd
 
+/predicted_epoch_0.npy
+/predicted_epoch_1.npy
+/predicted_epoch_2.npy
+/predicted_epoch_3.npy
+/predicted_epoch_4.npy
+/predicted_epoch_5.npy
+/predicted_epoch_6.npy
+/predicted_epoch_7.npy
+/predicted_epoch_8.npy
+/predicted_epoch_9.npy
+/predicted_epoch_10.npy
+/predicted_epoch_11.npy
+/predicted_epoch_12.npy
+/predicted_epoch_13.npy
+/predicted_epoch_14.npy
+/predicted_epoch_15.npy
+/predicted_epoch_16.npy
+/predicted_epoch_17.npy
+/predicted_epoch_18.npy
+/predicted_epoch_19.npy
+/scripts/reconstructed.wav
+/spectrogramCNN.ipynb
