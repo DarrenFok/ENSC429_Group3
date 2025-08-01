@@ -157,4 +157,4 @@ sysinfo.txt
 /predicted_epoch_18.npy
 /predicted_epoch_19.npy
 /scripts/reconstructed.wav
-/spectrogramCNN.ipynb
+/vocal_isolator.pth
