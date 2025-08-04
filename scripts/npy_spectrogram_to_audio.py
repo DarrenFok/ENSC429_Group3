@@ -14,7 +14,8 @@ def reconstruct_audio_from_stft_npy(npy_path, output_path, nperseg=1024, noverla
     y = y/np.max(np.abs(y))
 
     # save output to WAV
-    sf.write("reconstructed.wav", y, 44100)
+    # sf.write("reconstructed.wav", y, 44100)
+    sf.write(str(output_path), y, 44100)
 
 def reconstruct_audio_from_directory(npy_dir, output_dir):
     """

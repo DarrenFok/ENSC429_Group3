@@ -112,9 +112,10 @@ def run_pipeline(input_wav, output_wav, model_path):
 # === Example usage ===its a
 # python predict_and_convert.py
 if __name__ == "__main__":
-    model_path = "C:/Users/Darren/Documents/Projects/ENSC429_Group3/vocal_isolator.pth"
-    input_wav = "C:/Users/Darren/Documents/Projects/ENSC429_Group3/data/Samples/valmix/mix_Steven_Clark_-_Bounty.wav"
-    output_wav = "C:/Users/Darren/Documents/Projects/ENSC429_Group3/mix_Steven_Clark_-_Bounty_reconstructed.wav"
+    cwd = Path.cwd().parent
+    model_path = Path(cwd/"vocal_isolator.pth")
+    input_wav = Path(cwd/"data/Samples/mix_James_May_-_If_You_Say.wav")
+    output_wav = Path(cwd/"data/output/mix_James_May_-_If_You_Say_reconstructed.wav")
 
     run_pipeline(input_wav, output_wav, model_path)
 

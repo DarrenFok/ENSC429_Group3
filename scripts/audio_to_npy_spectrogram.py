@@ -35,6 +35,7 @@ def wav_to_npy(wav_path, output_dir=None, nperseg=1024, noverlap=512):
     np.save(output_file, log_mag_spectrogram)
 
     print(f"Converted {wav_path.name} -> {output_file} (shape: {log_mag_spectrogram.shape})")
+    return output_file
 
 
 def batch_convert_wav_to_npy(input_dir, output_dir=None, nperseg=1024, noverlap=512):
@@ -62,4 +63,5 @@ def batch_convert_wav_to_npy(input_dir, output_dir=None, nperseg=1024, noverlap=
 # Example usage:
 # batch_convert_wav_to_npy("path/to/wav_folder", output_dir="path/to/npy_folder")
 
-batch_convert_wav_to_npy("../data/Samples/", "../data/Samples/")
+# batch_convert_wav_to_npy("../data/Samples/train/vocal", "../data/vocal/train")
+# batch_convert_wav_to_npy("../data/Samples/test/vocal", "../data/vocal/val")
