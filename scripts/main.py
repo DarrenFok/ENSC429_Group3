@@ -15,28 +15,29 @@ class UNet(nn.Module):
     def __init__(self):
         super(UNet, self).__init__()
 
-        def conv_block(in_channels, out_channels):
+        def conv_block(in_channels, out_channels, dropout_rate=0.2):
             return nn.Sequential(
-                nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1),  # 3x3 filter for feature detection
-                nn.BatchNorm2d(out_channels),  # stabilize and speeds up training
-                nn.ReLU(inplace=True),  # apply non-linearity for complex pattern learning
+                nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1),
+                nn.BatchNorm2d(out_channels),
+                nn.LeakyReLU(0.2, inplace=True),
+                nn.Dropout2d(dropout_rate),
                 nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1),
                 nn.BatchNorm2d(out_channels),
-                nn.ReLU(inplace=True),
+                nn.LeakyReLU(0.2, inplace=True)
             )
 
-        # Encoding - reduce spatial dimensions and abstract features so model can understand
+        # Encoding
         self.encoder1 = conv_block(1, 64)
-        self.pool1 = nn.MaxPool2d(kernel_size=2, stride=2)  # reduce resolution by 2 to allow for larger context
+        self.pool1 = nn.MaxPool2d(kernel_size=2, stride=2)
         self.encoder2 = conv_block(64, 128)
         self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2)
         self.encoder3 = conv_block(128, 256)
         self.pool3 = nn.MaxPool2d(kernel_size=2, stride=2)
         self.encoder4 = conv_block(256, 512)
         self.pool4 = nn.MaxPool2d(kernel_size=2, stride=2)
-        self.center = conv_block(512, 1024)  # decision hub - learns what high level features are
+        self.center = conv_block(512, 1024, dropout_rate=0.3)
 
-        # Decoding - up sample and reconstruct the isolated vocals
+        # Decoding
         self.up4 = nn.ConvTranspose2d(1024, 512, kernel_size=2, stride=2)
         self.dec4 = conv_block(1024, 512)
         self.up3 = nn.ConvTranspose2d(512, 256, kernel_size=2, stride=2)
@@ -46,10 +47,7 @@ class UNet(nn.Module):
         self.up1 = nn.ConvTranspose2d(128, 64, kernel_size=2, stride=2)
         self.dec1 = conv_block(128, 64)
 
-        self.final = nn.Sequential(
-            nn.Conv2d(64, 1, kernel_size=1),
-            nn.Sigmoid()
-        )  # reduce back to 1 channel (vocal spectrogram)
+        self.final = nn.Conv2d(64, 1, kernel_size=1)  # Removed Sigmoid
 
     def forward(self, x):
         # encoding
@@ -59,14 +57,13 @@ class UNet(nn.Module):
         e4 = self.encoder4(self.pool3(e3))
         center = self.center(self.pool4(e4))
 
-        # decoding
+        # decoding with skip connections
         d4 = self.dec4(torch.cat([self.up4(center), e4], dim=1))
         d3 = self.dec3(torch.cat([self.up3(d4), e3], dim=1))
         d2 = self.dec2(torch.cat([self.up2(d3), e2], dim=1))
         d1 = self.dec1(torch.cat([self.up1(d2), e1], dim=1))
-        out = self.final(d1)
 
-        return out
+        return self.final(d1)
 
 def pad_to_multiple(tensor, multiple=16):
     """Pad tensor H and W to be multiple of `multiple` (default 16)."""
