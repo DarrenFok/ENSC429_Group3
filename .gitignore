@@ -158,3 +158,4 @@ sysinfo.txt
 /predicted_epoch_19.npy
 /scripts/reconstructed.wav
 /vocal_isolator.pth
+/scripts/.idea/
