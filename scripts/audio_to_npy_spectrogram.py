@@ -8,6 +8,11 @@ def wav_to_npy(wav_path, output_dir=None, nperseg=1024, noverlap=512):
     """
     Converts a WAV file into a single .npy file with real and imaginary parts of STFT.
     Shape of saved array: (2, freq_bins, time_frames)
+    :param wav_path: directory of .wav file
+    :param output_dir: directory to save output .npy file
+    :param nperseg: Length of each segment. Default 1024
+    :param noverlap: Number of points to overlap between segments. Default 512
+    :return: directory of output file
     """
     wav_path = Path(wav_path)
     if output_dir is None:
@@ -24,9 +29,6 @@ def wav_to_npy(wav_path, output_dir=None, nperseg=1024, noverlap=512):
     # Perform STFT
     _, _, Zxx = stft(audio, fs=fs, nperseg=nperseg, noverlap=noverlap)
 
-    # # Stack real & imaginary parts
-    # combined = np.stack((np.real(Zxx), np.imag(Zxx)), axis=0)
-
     magnitude = np.abs(Zxx)
     log_mag_spectrogram = librosa.amplitude_to_db(magnitude)
 
@@ -41,6 +43,11 @@ def wav_to_npy(wav_path, output_dir=None, nperseg=1024, noverlap=512):
 def batch_convert_wav_to_npy(input_dir, output_dir=None, nperseg=1024, noverlap=512):
     """
     Converts all WAV files in input_dir to .npy files with real and imaginary parts of STFT.
+    :param input_dir: directory of .wav files
+    :param output_dir: directory to save output .npy files
+    :param nperseg: length of each segment. Default 1024
+    :param noverlap: number of points to overlap between segments. Default 512
+    :return: directory of output files
     """
     input_dir = Path(input_dir)
     if output_dir is None:
@@ -58,10 +65,4 @@ def batch_convert_wav_to_npy(input_dir, output_dir=None, nperseg=1024, noverlap=
         wav_to_npy(wav_file, output_dir, nperseg=nperseg, noverlap=noverlap)
 
     print(f"All WAV files converted to {output_dir}")
-
-
-# Example usage:
-# batch_convert_wav_to_npy("path/to/wav_folder", output_dir="path/to/npy_folder")
-
-# batch_convert_wav_to_npy("../data/Samples/train/vocal", "../data/vocal/train")
-# batch_convert_wav_to_npy("../data/Samples/test/vocal", "../data/vocal/val")
+    return output_dir

@@ -10,7 +10,6 @@ import soundfile as sf
 from scipy.signal import stft
 from scipy.io.wavfile import write as write_wav
 
-
 class UNet(nn.Module):
     def __init__(self):
         super(UNet, self).__init__()
@@ -77,6 +76,17 @@ def pad_to_multiple(tensor, multiple=16):
     return padded, pad_h, pad_w
 
 def run_pipeline(input_wav, output_wav, model_path):
+    """
+    Runs input wav file through neural network and generates vocal isolated wav file.
+
+    :param input_wav: Path to the input .wav file that needs to be processed
+    :type input_wav: str
+    :param output_wav: Path where the output .wav file will be saved
+    :type output_wav: str
+    :param model_path: Path to the trained model file to be used for inference
+    :type model_path: str
+    :return: None
+    """
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     wav_path = Path(input_wav)
     cwd = Path.cwd().parent
@@ -109,8 +119,6 @@ def run_pipeline(input_wav, output_wav, model_path):
     # reconstruct
     reconstruct_audio_from_stft_npy(output_npy_path, output_wav)
 
-# === Example usage ===its a
-# python predict_and_convert.py
 if __name__ == "__main__":
     cwd = Path.cwd().parent
     model_path = Path(cwd/"vocal_isolator.pth")
