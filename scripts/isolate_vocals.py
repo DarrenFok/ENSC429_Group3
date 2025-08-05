@@ -9,6 +9,7 @@ import librosa
 import soundfile as sf
 from scipy.signal import stft
 from scipy.io.wavfile import write as write_wav
+import sys
 
 class UNet(nn.Module):
     def __init__(self):
@@ -120,10 +121,16 @@ def run_pipeline(input_wav, output_wav, model_path):
     reconstruct_audio_from_stft_npy(output_npy_path, output_wav)
 
 if __name__ == "__main__":
-    cwd = Path.cwd().parent
-    model_path = Path(cwd/"vocal_isolator.pth")
-    input_wav = Path(cwd/"data/Samples/mix_James_May_-_If_You_Say.wav")
-    output_wav = Path(cwd/"data/output/mix_James_May_-_If_You_Say_reconstructed.wav")
+    if len(sys.argv) < 1:
+        print("Usage: python main.py input_wav [output_wav]")
+        sys.exit(1)
+
+    input_wav = Path(sys.argv[1])
+    output_path = Path.cwd() if len(sys.argv) > 1 else Path(sys.argv[2])
+    output_wav = output_path / f"{input_wav.stem}_reconstructed.wav"
+    model_path = Path.cwd().parent / "vocal_isolator.pth"
+
+    # Create output directory if it doesn't exist
+    output_wav.parent.mkdir(parents=True, exist_ok=True)
 
     run_pipeline(input_wav, output_wav, model_path)
-
