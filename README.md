@@ -8,4 +8,4 @@ https://1sfu-my.sharepoint.com/:u:/g/personal/wms8_sfu_ca/EXmqgAdnHgdGja87iX4dtZ
 
 3. From `<project directory>\scripts`, run the following command:
 `python isolate_vocals.py <input .wav file path> <optional output.wav file path>`
-    - if no output path is specified, output.wav will be output where `isolate_vocals.py` is located
+    - if no output path is specified, output.wav will be output in directory where `isolate_vocals.py` is located
